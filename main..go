@@ -106,13 +106,14 @@ func formRequest(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	defer func(insert *sql.Rows) {
+	func(insert *sql.Rows) {
 		err := insert.Close()
 		if err != nil {
 			log.Fatalln(err)
 		}
 	}(insert)
-
+	http.Redirect(w, r, r.Header.Get("Referer"), http.StatusFound)
+	//fmt.Fprint(w, r.Header)
 	//err := r.ParseForm()
 	//if err != nil {
 	//	log.Fatalln(err.Error())
