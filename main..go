@@ -21,7 +21,7 @@ func init() {
 	}
 	db.SetConnMaxLifetime(time.Minute * 3)
 	db.SetMaxOpenConns(0)
-	db.SetMaxIdleConns(10)
+	db.SetMaxIdleConns(0)
 }
 func main() {
 	fs := http.FileServer(http.Dir("./assets"))
@@ -97,11 +97,9 @@ func blogDetails(w http.ResponseWriter, r *http.Request) {
 	//http.ServeFile(w, r, "pages/index.gohtml")
 }
 func formRequest(w http.ResponseWriter, r *http.Request) {
-
 	name := r.FormValue("name")
 	email := r.FormValue("email")
 	message := r.FormValue("message")
-
 	insertQuery := "INSERT INTO `inbox` (`name`,`email`,`messages`) VALUES ('%s','%s','%s')"
 	insertSql := fmt.Sprintf(insertQuery, name, email, message)
 	insert, err := db.Query(insertSql)
