@@ -1,20 +1,37 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
+	_ "github.com/go-sql-driver/mysql"
 	"html/template"
 	"log"
 	"net/http"
+	"time"
 )
 
+//db  s *sql.DB
+var db *sql.DB
+var err error
+
+func init() {
+	db, err = sql.Open("mysql", "admin:admin@tcp(127.0.0.1:3306)/gokufa")
+	if err != nil {
+		panic(err.Error())
+	}
+	db.SetConnMaxLifetime(time.Minute * 3)
+	db.SetMaxOpenConns(0)
+	db.SetMaxIdleConns(10)
+}
 func main() {
 	fs := http.FileServer(http.Dir("./assets"))
 	http.Handle("/resource/", http.StripPrefix("/resource/", fs))
 	http.HandleFunc("/", home)
 	http.HandleFunc("/blog", blog)
-	http.HandleFunc("/portfolio-single", portfolio_single)
-	http.HandleFunc("/blog-details", blog_details)
-	err := http.ListenAndServe(":9999", nil)
+	http.HandleFunc("/portfolio-single", portfolioSingle)
+	http.HandleFunc("/blog-details", blogDetails)
+	http.HandleFunc("/formRequest", formRequest)
+	err = http.ListenAndServe(":9999", nil)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
@@ -47,7 +64,7 @@ func blog(w http.ResponseWriter, r *http.Request) {
 	}
 	//http.ServeFile(w, r, "pages/index.gohtml")
 }
-func portfolio_single(w http.ResponseWriter, r *http.Request) {
+func portfolioSingle(w http.ResponseWriter, r *http.Request) {
 	parseFiles, err := template.ParseFiles("pages/index.gohtml")
 	if err != nil {
 		log.Fatalln(err.Error())
@@ -63,7 +80,7 @@ func portfolio_single(w http.ResponseWriter, r *http.Request) {
 	}
 	//http.ServeFile(w, r, "pages/index.gohtml")
 }
-func blog_details(w http.ResponseWriter, r *http.Request) {
+func blogDetails(w http.ResponseWriter, r *http.Request) {
 	parseFiles, err := template.ParseFiles("pages/index.gohtml")
 	if err != nil {
 		log.Fatalln(err.Error())
@@ -78,4 +95,36 @@ func blog_details(w http.ResponseWriter, r *http.Request) {
 		log.Fatalln(err.Error())
 	}
 	//http.ServeFile(w, r, "pages/index.gohtml")
+}
+func formRequest(w http.ResponseWriter, r *http.Request) {
+
+	name := r.FormValue("name")
+	email := r.FormValue("email")
+	message := r.FormValue("message")
+
+	insertQuery := "INSERT INTO `inbox` (`name`,`email`,`messages`) VALUES ('%s','%s','%s')"
+	insertSql := fmt.Sprintf(insertQuery, name, email, message)
+	insert, err := db.Query(insertSql)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer func(insert *sql.Rows) {
+		err := insert.Close()
+		if err != nil {
+			log.Fatalln(err)
+		}
+	}(insert)
+
+	//err := r.ParseForm()
+	//if err != nil {
+	//	log.Fatalln(err.Error())
+	//}
+	//form := r.Form
+	//for i, val:= range form{
+	//	_, err := fmt.Fprint(w,i,val)
+	//	if err != nil {
+	//		log.Fatalln(err.Error())
+	//	}
+	//}
+
 }
