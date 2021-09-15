@@ -46,7 +46,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
-	//http.ServeFile(w, r, "pages/index.gohtml")
+
 }
 func blog(w http.ResponseWriter, r *http.Request) {
 	parseFiles, err := template.ParseFiles("pages/index.gohtml")
@@ -62,7 +62,6 @@ func blog(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
-	//http.ServeFile(w, r, "pages/index.gohtml")
 }
 func portfolioSingle(w http.ResponseWriter, r *http.Request) {
 	parseFiles, err := template.ParseFiles("pages/index.gohtml")
@@ -78,7 +77,6 @@ func portfolioSingle(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
-	//http.ServeFile(w, r, "pages/index.gohtml")
 }
 func blogDetails(w http.ResponseWriter, r *http.Request) {
 	parseFiles, err := template.ParseFiles("pages/index.gohtml")
@@ -94,7 +92,6 @@ func blogDetails(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
-	//http.ServeFile(w, r, "pages/index.gohtml")
 }
 func formRequest(w http.ResponseWriter, r *http.Request) {
 	name := r.FormValue("name")
@@ -113,17 +110,18 @@ func formRequest(w http.ResponseWriter, r *http.Request) {
 		}
 	}(insert)
 	http.Redirect(w, r, r.Header.Get("Referer"), http.StatusFound)
-	//fmt.Fprint(w, r.Header)
-	//err := r.ParseForm()
-	//if err != nil {
-	//	log.Fatalln(err.Error())
-	//}
-	//form := r.Form
-	//for i, val:= range form{
-	//	_, err := fmt.Fprint(w,i,val)
-	//	if err != nil {
-	//		log.Fatalln(err.Error())
-	//	}
-	//}
+
+	/*fmt.Fprint(w, r.Header)
+	err := r.ParseForm()
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	form := r.Form
+	for i, val:= range form{
+		_, err := fmt.Fprint(w,i,val)
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+	}*/
 
 }
