@@ -93,11 +93,19 @@ func RegisterRequest(w http.ResponseWriter, r *http.Request) {
 		email := r.FormValue("email")
 		password := r.FormValue("password")
 		confirmPassword := r.FormValue("confirmPassword")
+		if confirmPassword == password {
+			hash := PasswordHash(password)
+			insertQuery := "INSERT INTO users(email, password) VALUES ('%s','%s')"
+			insertSql := fmt.Sprintf(insertQuery, email, hash)
+			_, err := Db.Query(insertSql)
+			if err != nil {
+				log.Fatalln(err.Error())
+			}
 
-		_, err := fmt.Fprint(w, email, password, confirmPassword)
-		if err != nil {
-			log.Fatalln(err.Error())
+		} else {
+			fmt.Fprint(w, "Password Not Match")
 		}
+
 	} else {
 		fmt.Fprint(w, "notAllaw")
 	}
