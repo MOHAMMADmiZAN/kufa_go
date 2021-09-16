@@ -3,6 +3,7 @@ package main
 import (
 	"golang.org/x/crypto/bcrypt"
 	"log"
+	//"github.com/go-playground/validator/v10"
 )
 
 func PasswordHash(password string) string {
@@ -21,4 +22,9 @@ func MatcherHash(hashPassword, password string) error {
 		log.Fatalln(err)
 	}
 	return err
+}
+
+type User struct {
+	Email    string `validate:"required,email"`
+	Password string `validate:"required,min=4,max=10"`
 }

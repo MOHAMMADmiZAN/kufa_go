@@ -15,7 +15,6 @@ func Route() {
 	http.HandleFunc("/login", Login)
 	http.HandleFunc("/register", Register)
 	http.HandleFunc("/registerRequest", RegisterRequest)
-	http.HandleFunc("/inboxRequest", InboxRequest)
 	err = http.ListenAndServe(":5555", nil)
 	if err != nil {
 		fmt.Println(err.Error())

@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"github.com/go-playground/validator"
 	"html/template"
 	"log"
 	"net/http"
@@ -93,14 +94,31 @@ func RegisterRequest(w http.ResponseWriter, r *http.Request) {
 		email := r.FormValue("email")
 		password := r.FormValue("password")
 		confirmPassword := r.FormValue("confirmPassword")
+		user := &User{
+			Email:    email,
+			Password: password,
+		}
+		validate := validator.New()
+		err := validate.Struct(user)
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
 		if confirmPassword == password {
 			hash := PasswordHash(password)
 			insertQuery := "INSERT INTO users(email, password) VALUES ('%s','%s')"
 			insertSql := fmt.Sprintf(insertQuery, email, hash)
-			_, err := Db.Query(insertSql)
+			insert, err := Db.Query(insertSql)
 			if err != nil {
 				log.Fatalln(err.Error())
 			}
+			func(insert *sql.Rows) {
+				err := insert.Close()
+				if err != nil {
+					log.Fatalln(err)
+				}
+			}(insert)
+			fmt.Fprint(w, "Registration Successful")
+			//http.Redirect(w, r, r.Header.Get("Referer"), http.StatusFound)
 
 		} else {
 			fmt.Fprint(w, "Password Not Match")
@@ -109,24 +127,5 @@ func RegisterRequest(w http.ResponseWriter, r *http.Request) {
 	} else {
 		fmt.Fprint(w, "notAllaw")
 	}
-
-}
-func InboxRequest(w http.ResponseWriter, r *http.Request) {
-	name := r.FormValue("name")
-	email := r.FormValue("email")
-	message := r.FormValue("message")
-	insertQuery := "INSERT INTO `inbox` (`name`,`email`,`messages`) VALUES ('%s','%s','%s')"
-	insertSql := fmt.Sprintf(insertQuery, name, email, message)
-	insert, err := Db.Query(insertSql)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	func(insert *sql.Rows) {
-		err := insert.Close()
-		if err != nil {
-			log.Fatalln(err)
-		}
-	}(insert)
-	http.Redirect(w, r, r.Header.Get("Referer"), http.StatusFound)
 
 }
