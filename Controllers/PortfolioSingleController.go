@@ -7,11 +7,11 @@ import (
 )
 
 func PortfolioSingle(w http.ResponseWriter, r *http.Request) {
-	parseFiles, err := template.ParseFiles("pages/index.gohtml")
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	parseFiles, err = template.ParseFiles("pages/portfolio-single.gohtml")
+	//parseFiles, err := template.ParseFiles("pages/index.gohtml")
+	//if err != nil {
+	//	log.Fatalln(err.Error())
+	//}
+	parseFiles, err := template.ParseFiles("View/portfolio-single.gohtml")
 	if err != nil {
 		log.Fatalln(err.Error())
 	}

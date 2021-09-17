@@ -11,11 +11,11 @@ import (
 )
 
 func Register(w http.ResponseWriter, r *http.Request) {
-	parseFiles, err := template.ParseFiles("pages/login.gohtml")
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	parseFiles, err = template.ParseFiles("pages/register.gohtml")
+	//parseFiles, err := template.ParseFiles("pages/login.gohtml")
+	//if err != nil {
+	//	log.Fatalln(err.Error())
+	//}
+	parseFiles, err := template.ParseFiles("View/register.gohtml")
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
@@ -26,9 +26,10 @@ func Register(w http.ResponseWriter, r *http.Request) {
 }
 func RegisterRequest(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
-		email := r.FormValue("email")
-		password := r.FormValue("password")
-		confirmPassword := r.FormValue("confirmPassword")
+		r.ParseForm()
+		email := r.Form.Get("email")
+		password := r.Form.Get("password")
+		confirmPassword := r.Form.Get("confirmPassword")
 		user := &User{
 			Email:           email,
 			Password:        password,

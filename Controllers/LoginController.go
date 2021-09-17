@@ -7,7 +7,7 @@ import (
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	parseFiles, err := template.ParseFiles("pages/login.gohtml")
+	parseFiles, err := template.ParseFiles("View/login.gohtml")
 	if err != nil {
 		log.Fatalln(err.Error())
 	}

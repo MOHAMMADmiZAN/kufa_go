@@ -7,11 +7,11 @@ import (
 )
 
 func BlogDetails(w http.ResponseWriter, r *http.Request) {
-	parseFiles, err := template.ParseFiles("pages/index.gohtml")
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	parseFiles, err = template.ParseFiles("pages/blog-details.gohtml")
+	//parseFiles, err := template.ParseFiles("pages/index.gohtml")
+	//if err != nil {
+	//	log.Fatalln(err.Error())
+	//}
+	parseFiles, err := template.ParseFiles("View/blog-details.gohtml")
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
