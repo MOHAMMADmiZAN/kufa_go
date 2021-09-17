@@ -25,6 +25,7 @@ func MatcherHash(hashPassword, password string) error {
 }
 
 type User struct {
-	Email    string `validate:"required,email"`
-	Password string `validate:"required,min=4,max=10"`
+	Email           string `validate:"required,email"`
+	Password        string `validate:"required,min=4,max=20"`
+	ConfirmPassword string `validate:"required,eqfield=Password"`
 }

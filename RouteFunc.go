@@ -95,21 +95,21 @@ func RegisterRequest(w http.ResponseWriter, r *http.Request) {
 		password := r.FormValue("password")
 		confirmPassword := r.FormValue("confirmPassword")
 		user := &User{
-			Email:    email,
-			Password: password,
+			Email:           email,
+			Password:        password,
+			ConfirmPassword: confirmPassword,
 		}
 		validate := validator.New()
 		err := validate.Struct(user)
 		if err != nil {
-			log.Fatalln(err.Error())
-		}
-		if confirmPassword == password {
+			fmt.Fprint(w, err.(validator.ValidationErrors))
+		} else {
 			hash := PasswordHash(password)
 			insertQuery := "INSERT INTO users(email, password) VALUES ('%s','%s')"
 			insertSql := fmt.Sprintf(insertQuery, email, hash)
 			insert, err := Db.Query(insertSql)
 			if err != nil {
-				log.Fatalln(err.Error())
+				log.Fatalln(err)
 			}
 			func(insert *sql.Rows) {
 				err := insert.Close()
@@ -118,14 +118,12 @@ func RegisterRequest(w http.ResponseWriter, r *http.Request) {
 				}
 			}(insert)
 			fmt.Fprint(w, "Registration Successful")
-			//http.Redirect(w, r, r.Header.Get("Referer"), http.StatusFound)
-
-		} else {
-			fmt.Fprint(w, "Password Not Match")
 		}
 
+		//http.Redirect(w, r, r.Header.Get("Referer"), http.StatusFound)
+
 	} else {
-		fmt.Fprint(w, "notAllaw")
+		fmt.Fprint(w, "notAllow")
 	}
 
 }
