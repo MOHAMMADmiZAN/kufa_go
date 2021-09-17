@@ -1,7 +1,6 @@
 package Controllers
 
 import (
-	"context"
 	"database/sql"
 	"fmt"
 	"github.com/go-playground/validator"
@@ -11,12 +10,11 @@ import (
 	"net/http"
 )
 
-var ctx context.Context
-
 func Login(w http.ResponseWriter, r *http.Request) {
 	parseFiles, err := template.ParseFiles("View/login.gohtml")
 	if err != nil {
-		log.Fatalln(err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
 	err = parseFiles.Execute(w, nil)
 	if err != nil {
@@ -42,12 +40,14 @@ func LoginRequest(w http.ResponseWriter, r *http.Request) {
 			err := DataBase.Db.QueryRow("SELECT email, password FROM users WHERE email=?", email).Scan(&ReturnUser, &ReturnPassword)
 			if err == sql.ErrNoRows && err != nil {
 				fmt.Println(err)
+				http.Redirect(w, r, "/login", http.StatusFound)
 			} else {
 				err := MatcherHash(ReturnPassword, password)
 				if err != nil {
-					fmt.Println(err.Error())
+					fmt.Println(err)
+					http.Redirect(w, r, "/login", http.StatusFound)
 				} else {
-
+					http.Redirect(w, r, "/dashboard", http.StatusFound)
 				}
 
 			}
