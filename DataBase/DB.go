@@ -1,4 +1,4 @@
-package main
+package DataBase
 
 import (
 	"database/sql"
@@ -7,12 +7,12 @@ import (
 )
 
 var Db *sql.DB
-var err error
+var Err error
 
 func init() {
-	Db, err = sql.Open("mysql", "admin:admin@tcp(127.0.0.1:3306)/gokufa")
-	if err != nil {
-		panic(err.Error())
+	Db, Err = sql.Open("mysql", "admin:admin@tcp(127.0.0.1:3306)/gokufa")
+	if Err != nil {
+		panic(Err.Error())
 	}
 	TableNotExits()
 	Db.SetConnMaxLifetime(time.Minute * 3)

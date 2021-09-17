@@ -1,4 +1,4 @@
-package main
+package Controllers
 
 import (
 	"golang.org/x/crypto/bcrypt"
