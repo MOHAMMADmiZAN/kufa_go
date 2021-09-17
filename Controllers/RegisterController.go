@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/go-playground/validator"
 	"html/template"
-	"kufa/View/DataBase"
+	"kufa/DataBase"
 	"log"
 	"net/http"
 )

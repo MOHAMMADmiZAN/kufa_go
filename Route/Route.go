@@ -3,7 +3,7 @@ package Route
 import (
 	"fmt"
 	"kufa/Controllers"
-	"kufa/View/DataBase"
+	"kufa/DataBase"
 	"net/http"
 )
 
