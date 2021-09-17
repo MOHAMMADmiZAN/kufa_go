@@ -1,10 +1,17 @@
 package Controllers
 
 import (
+	"context"
+	"database/sql"
+	"fmt"
+	"github.com/go-playground/validator"
 	"html/template"
+	"kufa/DataBase"
 	"log"
 	"net/http"
 )
+
+var ctx context.Context
 
 func Login(w http.ResponseWriter, r *http.Request) {
 	parseFiles, err := template.ParseFiles("View/login.gohtml")
@@ -15,4 +22,37 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
+}
+func LoginRequest(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		r.ParseForm()
+		email := r.Form.Get("email")
+		password := r.Form.Get("password")
+		loginUser := &LoginUser{
+			Email:    email,
+			Password: password,
+		}
+		validate := validator.New()
+		err := validate.Struct(loginUser)
+		if err != nil {
+			fmt.Fprint(w, err.(validator.ValidationErrors))
+		} else {
+			var ReturnUser string
+			var ReturnPassword string
+			err := DataBase.Db.QueryRow("SELECT email, password FROM users WHERE email=?", email).Scan(&ReturnUser, &ReturnPassword)
+			if err == sql.ErrNoRows && err != nil {
+				fmt.Println(err)
+			} else {
+				err := MatcherHash(ReturnPassword, password)
+				if err != nil {
+					fmt.Println(err.Error())
+				} else {
+
+				}
+
+			}
+
+		}
+	}
+
 }

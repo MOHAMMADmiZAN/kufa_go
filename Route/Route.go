@@ -17,7 +17,8 @@ func Route() {
 	http.HandleFunc("/login", Controllers.Login)
 	http.HandleFunc("/register", Controllers.Register)
 	http.HandleFunc("/registerRequest", Controllers.RegisterRequest)
-	DataBase.Err = http.ListenAndServe(":5555", nil)
+	http.HandleFunc("/loginRequest", Controllers.LoginRequest)
+	DataBase.Err = http.ListenAndServe(":9000", nil)
 	if DataBase.Err != nil {
 		fmt.Println(DataBase.Err.Error())
 	}
