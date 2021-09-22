@@ -1,6 +1,7 @@
 package Controllers
 
 import (
+	"html/template"
 	"net/http"
 )
 
@@ -9,10 +10,8 @@ type Data struct {
 	Roll int
 }
 
+var tpl *template.Template
+
 func Dashboard(w http.ResponseWriter, r *http.Request) {
-	renderGohtml(w, "master.gohtml", nil)
-
-	data := Data{Name: "Mizan", Roll: 15}
-	renderGohtml(w, "dashboard.gohtml", data)
-
+	renderGohtml(w, "dashboard.gohtml", nil)
 }
