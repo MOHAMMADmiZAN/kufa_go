@@ -4,25 +4,13 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/go-playground/validator"
-	"html/template"
 	"kufa/DataBase"
 	"log"
 	"net/http"
 )
 
 func Register(w http.ResponseWriter, r *http.Request) {
-	//parseFiles, err := template.ParseFiles("pages/login.gohtml")
-	//if err != nil {
-	//	log.Fatalln(err.Error())
-	//}
-	parseFiles, err := template.ParseFiles("View/register.gohtml")
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	err = parseFiles.Execute(w, nil)
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
+	renderGohtml(w, "register.gohtml")
 }
 func RegisterRequest(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {

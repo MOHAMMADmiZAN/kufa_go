@@ -4,22 +4,12 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/go-playground/validator"
-	"html/template"
 	"kufa/DataBase"
-	"log"
 	"net/http"
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	parseFiles, err := template.ParseFiles("View/login.gohtml")
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	err = parseFiles.Execute(w, nil)
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
+	renderGohtml(w, "login.gohtml")
 }
 func LoginRequest(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {

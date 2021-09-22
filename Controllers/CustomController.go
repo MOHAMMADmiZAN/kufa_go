@@ -1,11 +1,56 @@
 package Controllers
 
 import (
+	"fmt"
 	"golang.org/x/crypto/bcrypt"
+	"html/template"
 	"log"
-	//"github.com/go-playground/validator/v10"
+	"net/http"
 )
 
+func renderGohtml(w http.ResponseWriter, gohtml string) {
+
+	parseFiles, err := template.ParseFiles("View/" + gohtml)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	err = parseFiles.Execute(w, nil)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+}
+
+//var functions = template.FuncMap{}
+
+//func renderGohtmlTest(w http.ResponseWriter) (map[string]*template.Template, error) {
+//	myCache := map[string]*template.Template{}
+//	pages, err := filepath.Glob("view/*.gohtml")
+//	if err != nil {
+//		fmt.Println(err.Error())
+//	}
+//	for _, page := range pages {
+//		name := filepath.Base(page)
+//		ts, err := template.New(name).Funcs(functions).ParseFiles(page)
+//		if err != nil {
+//			return myCache, err
+//		}
+//		matchs, err := filepath.Glob("view/*.gohtml")
+//		if err != nil {
+//			return myCache, err
+//		}
+//		if len(matchs) > 0 {
+//			ts, err = ts.ParseGlob("view/*.gohtml")
+//			if err != nil {
+//				return myCache, err
+//			}
+//
+//		}
+//		myCache[name] = ts
+//	}
+//	return myCache,nil
+//
+//}
 func PasswordHash(password string) string {
 	bs := []byte(password)
 	hash, err2 := bcrypt.GenerateFromPassword(bs, bcrypt.DefaultCost)

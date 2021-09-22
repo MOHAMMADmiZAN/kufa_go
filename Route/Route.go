@@ -7,6 +7,8 @@ import (
 	"net/http"
 )
 
+const PortNumber = ":9000"
+
 func Route() {
 	fs := http.FileServer(http.Dir("./assets"))
 	http.Handle("/resource/", http.StripPrefix("/resource/", fs))
@@ -19,8 +21,10 @@ func Route() {
 	http.HandleFunc("/registerRequest", Controllers.RegisterRequest)
 	http.HandleFunc("/loginRequest", Controllers.LoginRequest)
 	http.HandleFunc("/dashboard", Controllers.Dashboard)
-	DataBase.Err = http.ListenAndServe(":9000", nil)
+	fmt.Println(fmt.Sprintf("Server Starting At PortNumber: %s", PortNumber))
+	DataBase.Err = http.ListenAndServe(PortNumber, nil)
 	if DataBase.Err != nil {
 		fmt.Println(DataBase.Err.Error())
 	}
+
 }
