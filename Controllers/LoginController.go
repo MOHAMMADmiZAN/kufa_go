@@ -9,7 +9,7 @@ import (
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	renderGohtml(w, "login.gohtml")
+	renderGohtml(w, "login.gohtml", nil)
 }
 func LoginRequest(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {

@@ -5,6 +5,6 @@ import (
 )
 
 func Home(w http.ResponseWriter, r *http.Request) {
-	renderGohtml(w, "index.gohtml")
+	renderGohtml(w, "index.gohtml", nil)
 
 }

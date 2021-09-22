@@ -5,5 +5,5 @@ import (
 )
 
 func PortfolioSingle(w http.ResponseWriter, r *http.Request) {
-	renderGohtml(w, "portfolio-single.gohtml")
+	renderGohtml(w, "portfolio-single.gohtml", nil)
 }

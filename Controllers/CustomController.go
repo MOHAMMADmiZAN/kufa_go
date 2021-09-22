@@ -8,8 +8,10 @@ import (
 	"net/http"
 )
 
-func renderGohtml(w http.ResponseWriter, gohtml string) {
-
+func renderGohtml(w http.ResponseWriter, gohtml string, data interface{}) {
+	if data == "" {
+		data = nil
+	}
 	parseFiles, err := template.ParseFiles("View/" + gohtml)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

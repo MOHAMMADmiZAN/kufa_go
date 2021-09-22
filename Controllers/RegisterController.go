@@ -10,7 +10,7 @@ import (
 )
 
 func Register(w http.ResponseWriter, r *http.Request) {
-	renderGohtml(w, "register.gohtml")
+	renderGohtml(w, "register.gohtml", nil)
 }
 func RegisterRequest(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {

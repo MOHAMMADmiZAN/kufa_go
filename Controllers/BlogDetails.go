@@ -5,5 +5,5 @@ import (
 )
 
 func BlogDetails(w http.ResponseWriter, r *http.Request) {
-	renderGohtml(w, "blog-details.gohtml")
+	renderGohtml(w, "blog-details.gohtml", nil)
 }
