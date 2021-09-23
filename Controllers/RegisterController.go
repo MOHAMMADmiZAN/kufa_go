@@ -11,11 +11,14 @@ import (
 )
 
 func Register(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
-	renderGohtml(w, "register.gohtml", nil)
+	renderGohtml(w, "register.gohtml")
 }
 func RegisterRequest(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
 	if r.Method == http.MethodPost {
-		r.ParseForm()
+		err := r.ParseForm()
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
 		email := r.Form.Get("email")
 		password := r.Form.Get("password")
 		confirmPassword := r.Form.Get("confirmPassword")
@@ -25,7 +28,7 @@ func RegisterRequest(w http.ResponseWriter, r *http.Request, h httprouter.Params
 			ConfirmPassword: confirmPassword,
 		}
 		validate := validator.New()
-		err := validate.Struct(user)
+		err = validate.Struct(user)
 		if err != nil {
 			fmt.Fprint(w, err.(validator.ValidationErrors))
 		} else {
