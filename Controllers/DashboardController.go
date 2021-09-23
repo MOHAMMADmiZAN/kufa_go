@@ -5,15 +5,17 @@ import (
 	"net/http"
 )
 
-type Data struct {
-	Name string
-	Roll int
-}
-
 func Dashboard(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
-	template := []string{
-		"View/master.gohtml",
+
+	templates := []string{
 		"View/dashboard.gohtml",
+		"View/master.gohtml",
 	}
-	renderMulipleGohtml(w, template, nil)
+	renderMultipleGohtml(w, templates)
+	//fmt.Println(template)
+	//files, err := template.ParseFiles("View/dashboard.gohtml", "View/master.gohtml")
+	//if err != nil {
+	//	log.Fatalln(err.Error())
+	//}
+	//files.Execute(w,nil)
 }

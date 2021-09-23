@@ -19,16 +19,17 @@ func renderGohtml(w http.ResponseWriter, gohtml string, data ...interface{}) {
 		fmt.Println(err.Error())
 	}
 }
-func renderMulipleGohtml(w http.ResponseWriter, temples []string, data ...interface{}) {
+func renderMultipleGohtml(w http.ResponseWriter, temples []string, data ...interface{}) bool {
 	parseFiles, err := template.ParseFiles(temples...)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		return
+		return false
 	}
 	err = parseFiles.Execute(w, data)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+	return true
 }
 
 func PasswordHash(password string) string {
