@@ -11,7 +11,7 @@ import (
 )
 
 func Register(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
-	renderGohtml(w, "register.gohtml")
+	renderGohtml(w, "register.gohtml", nil)
 }
 func RegisterRequest(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
 	if r.Method == http.MethodPost {

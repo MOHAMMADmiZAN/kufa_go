@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func renderGohtml(w http.ResponseWriter, gohtml string, data ...interface{}) {
+func renderGohtml(w http.ResponseWriter, gohtml string, data interface{}) {
 	parseFiles, err := template.ParseFiles("View/" + gohtml)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -19,7 +19,7 @@ func renderGohtml(w http.ResponseWriter, gohtml string, data ...interface{}) {
 		fmt.Println(err.Error())
 	}
 }
-func renderMultipleGohtml(w http.ResponseWriter, temples []string, data ...interface{}) bool {
+func renderMultipleGohtml(w http.ResponseWriter, temples []string, data interface{}) bool {
 	parseFiles, err := template.ParseFiles(temples...)
 	if err != nil {
 		//w.WriteHeader(http.StatusInternalServerError)
