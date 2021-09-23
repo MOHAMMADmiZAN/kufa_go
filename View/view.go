@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	LayoutDir   string = "views/"
+	LayoutDir   string = "View/Dashboard"
 	TemplateExt string = ".gohtml"
 )
 

@@ -6,8 +6,10 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"path/filepath"
 )
 
+// single view render
 func renderGohtml(w http.ResponseWriter, gohtml string, data interface{}) {
 	parseFiles, err := template.ParseFiles("View/" + gohtml)
 	if err != nil {
@@ -19,8 +21,20 @@ func renderGohtml(w http.ResponseWriter, gohtml string, data interface{}) {
 		fmt.Println(err.Error())
 	}
 }
-func renderMultipleGohtml(w http.ResponseWriter, temples []string, data interface{}) bool {
-	parseFiles, err := template.ParseFiles(temples...)
+
+// LayoutFiles view path Catch
+func LayoutFiles() []string {
+	files, err := filepath.Glob("View/Dashboard/*.gohtml")
+	if err != nil {
+		panic(err)
+	}
+	return files
+}
+
+// multiple view render
+func renderMultipleGohtml(w http.ResponseWriter, data interface{}, files ...string) {
+	files = append(files, LayoutFiles()...)
+	parseFiles, err := template.ParseFiles(files...)
 	if err != nil {
 		//w.WriteHeader(http.StatusInternalServerError)
 		//return false
@@ -30,7 +44,7 @@ func renderMultipleGohtml(w http.ResponseWriter, temples []string, data interfac
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	return true
+
 }
 
 func PasswordHash(password string) string {

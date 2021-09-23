@@ -7,11 +7,6 @@ import (
 
 func Dashboard(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
 
-	templates := []string{
-		"View/dashboard.gohtml",
-		"View/master.gohtml",
-	}
-
-	renderMultipleGohtml(w, templates, nil)
+	renderMultipleGohtml(w, nil, "View/Dashboard/dashboard.gohtml")
 
 }
