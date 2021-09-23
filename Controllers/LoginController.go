@@ -4,14 +4,15 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/go-playground/validator"
+	"github.com/julienschmidt/httprouter"
 	"kufa/DataBase"
 	"net/http"
 )
 
-func Login(w http.ResponseWriter, r *http.Request) {
+func Login(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
 	renderGohtml(w, "login.gohtml", nil)
 }
-func LoginRequest(w http.ResponseWriter, r *http.Request) {
+func LoginRequest(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
 	if r.Method == http.MethodPost {
 		r.ParseForm()
 		email := r.Form.Get("email")

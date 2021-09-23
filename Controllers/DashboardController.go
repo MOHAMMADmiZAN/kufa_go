@@ -1,6 +1,7 @@
 package Controllers
 
 import (
+	"github.com/julienschmidt/httprouter"
 	"html/template"
 	"net/http"
 )
@@ -12,6 +13,6 @@ type Data struct {
 
 var tpl *template.Template
 
-func Dashboard(w http.ResponseWriter, r *http.Request) {
+func Dashboard(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
 	renderGohtml(w, "dashboard.gohtml", nil)
 }
