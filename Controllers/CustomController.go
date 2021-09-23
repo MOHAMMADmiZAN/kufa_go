@@ -22,8 +22,9 @@ func renderGohtml(w http.ResponseWriter, gohtml string, data ...interface{}) {
 func renderMultipleGohtml(w http.ResponseWriter, temples []string, data ...interface{}) bool {
 	parseFiles, err := template.ParseFiles(temples...)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return false
+		//w.WriteHeader(http.StatusInternalServerError)
+		//return false
+		fmt.Println(err.Error())
 	}
 	err = parseFiles.Execute(w, data)
 	if err != nil {

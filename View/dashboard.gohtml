@@ -1,4 +1,5 @@
-{{template "starlight" .}}
+{{template "starlight"  }}
+{{block "css" .}}{{end}}
 {{block "content" .}}
     <div class="container">
         <div class="row mt-5">
@@ -13,3 +14,4 @@
         </div>
     </div>
 {{end}}
+{{block "js" .}}{{end}}
