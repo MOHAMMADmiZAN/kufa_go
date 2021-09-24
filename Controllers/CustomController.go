@@ -9,6 +9,10 @@ import (
 	"path/filepath"
 )
 
+var (
+	TemplatePath = "View/Dashboard/*.gohtml"
+)
+
 // single view render
 func renderGohtml(w http.ResponseWriter, gohtml string, data interface{}) {
 	parseFiles, err := template.ParseFiles("View/" + gohtml)
@@ -24,7 +28,8 @@ func renderGohtml(w http.ResponseWriter, gohtml string, data interface{}) {
 
 // LayoutFiles view path Catch
 func LayoutFiles() []string {
-	files, err := filepath.Glob("View/Dashboard/*.gohtml")
+
+	files, err := filepath.Glob(TemplatePath)
 	if err != nil {
 		panic(err)
 	}
@@ -36,9 +41,8 @@ func renderMultipleGohtml(w http.ResponseWriter, data interface{}, files ...stri
 	files = append(files, LayoutFiles()...)
 	parseFiles, err := template.ParseFiles(files...)
 	if err != nil {
-		//w.WriteHeader(http.StatusInternalServerError)
-		//return false
-		fmt.Println(err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
 	err = parseFiles.Execute(w, data)
 	if err != nil {
