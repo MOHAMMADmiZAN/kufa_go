@@ -4,9 +4,16 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/go-playground/validator"
+	"github.com/gorilla/sessions"
 	"github.com/julienschmidt/httprouter"
 	"kufa/DataBase"
+	"log"
 	"net/http"
+)
+
+var (
+	key   = []byte("super-secret-key")
+	store = sessions.NewCookieStore(key)
 )
 
 func Login(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
@@ -38,6 +45,12 @@ func LoginRequest(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
 					fmt.Println(err)
 					http.Redirect(w, r, "/login", http.StatusFound)
 				} else {
+					session, _ := store.Get(r, "Go_Session")
+					session.Values["authenticated"] = true
+					err := session.Save(r, w)
+					if err != nil {
+						log.Fatalln(err.Error())
+					}
 					http.Redirect(w, r, "/dashboard", http.StatusFound)
 				}
 
@@ -46,4 +59,14 @@ func LoginRequest(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
 		}
 	}
 
+}
+func LogOut(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
+	session, _ := store.Get(r, "Go_Session")
+
+	session.Values["authenticated"] = false
+	err := session.Save(r, w)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	http.Redirect(w, r, "/login", http.StatusFound)
 }

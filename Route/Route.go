@@ -30,9 +30,11 @@ func Route() {
 	router.POST("/registerRequest", Controllers.RegisterRequest)
 	//http.HandleFunc("/loginRequest", Controllers.LoginRequest)
 	router.POST("/loginRequest", Controllers.LoginRequest)
+	router.GET("/logOut", Controllers.LogOut)
 	//http.HandleFunc("/dashboard", Controllers.Dashboard)
 	router.GET("/dashboard", Controllers.Dashboard)
 	fmt.Println(fmt.Sprintf("Server Starting At PortNumber: %s", PortNumber))
+
 	DataBase.Err = http.ListenAndServe(PortNumber, router)
 	if DataBase.Err != nil {
 		fmt.Println(DataBase.Err.Error())
