@@ -93,6 +93,7 @@ type LoginUser struct {
 	Password string `validate:"required,min=4,max=20" json:"password"`
 }
 
+/// custom Alert With Function //
 type FrontEndAlert struct {
 	Type         string
 	ErrorMessage string

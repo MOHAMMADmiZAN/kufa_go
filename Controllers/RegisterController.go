@@ -10,8 +10,15 @@ import (
 	"net/http"
 )
 
+var registerAlert = FrontEndAlert{
+	Type:         "register",
+	ErrorMessage: "You Register Successfully",
+	ErrorSession: "registerGreen",
+}
+
 func Register(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
-	renderGohtml(w, "register.gohtml", nil)
+	registerAlert.GetAlertMessage(w, r, "View/Auth/login.gohtml")
+	renderGohtml(w, "Auth/register.gohtml", nil)
 }
 func RegisterRequest(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
 	if r.Method == http.MethodPost {
@@ -38,6 +45,9 @@ func RegisterRequest(w http.ResponseWriter, r *http.Request, h httprouter.Params
 			insert, err := DataBase.Db.Query(insertSql)
 			if err != nil {
 				log.Fatalln(err)
+			} else {
+				registerAlert.AddAlertMessage(w, r)
+
 			}
 			func(insert *sql.Rows) {
 				err := insert.Close()
@@ -45,7 +55,7 @@ func RegisterRequest(w http.ResponseWriter, r *http.Request, h httprouter.Params
 					log.Fatalln(err)
 				}
 			}(insert)
-			fmt.Fprint(w, "Registration Successful")
+			registerAlert.GetAlertMessage(w, r, "View/Auth/login.gohtml")
 		}
 
 		//http.Redirect(w, r, r.Header.Get("Referer"), http.StatusFound)

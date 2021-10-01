@@ -51,6 +51,9 @@
             <div class="signin-logo tx-center tx-24 tx-bold tx-inverse">starlight <span
                         class="tx-info tx-normal">admin</span></div>
             <div class="tx-center mg-b-60">Professional Admin Template Design</div>
+            {{if eq .Type "register"}}
+                <div class="alert alert-success mt-1 text-center">{{.Message}}</div>
+            {{end}}
 
             <form action="/loginRequest" method="POST">
                 <div class="form-group">
