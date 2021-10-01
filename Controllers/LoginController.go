@@ -72,5 +72,6 @@ func LogOut(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
+
 	http.Redirect(w, r, "/login", http.StatusFound)
 }

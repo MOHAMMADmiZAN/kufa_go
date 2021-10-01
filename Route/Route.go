@@ -34,7 +34,6 @@ func Route() {
 	//http.HandleFunc("/dashboard", Controllers.Dashboard)
 	router.GET("/dashboard", Controllers.Dashboard)
 	fmt.Println(fmt.Sprintf("Server Starting At PortNumber: %s", PortNumber))
-
 	DataBase.Err = http.ListenAndServe(PortNumber, router)
 	if DataBase.Err != nil {
 		fmt.Println(DataBase.Err.Error())
