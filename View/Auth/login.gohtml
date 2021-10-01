@@ -58,7 +58,7 @@
                 </div><!-- form-group -->
                 <div class="form-group">
                     <input type="password" name="password" class="form-control" placeholder="Enter your password">
-                    {{if eq .Type "err"}}
+                    {{if eq .Type "error"}}
                         <div class="alert alert-danger mt-1">{{.Message}}</div>
                     {{end}}
                     <a href="" class="tx-info tx-12 d-block mg-t-10">Forgot password?</a>

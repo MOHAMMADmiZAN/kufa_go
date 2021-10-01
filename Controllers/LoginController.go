@@ -11,8 +11,15 @@ import (
 	"net/http"
 )
 
+var logAlert = FrontEndAlert{
+	Type:         "error",
+	ErrorSession: "PasswordError",
+	ErrorMessage: "Password Not Valid",
+}
+
 func Login(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
-	GetAlertMessage(w, r, "passwordErr", "err", "View/Auth/login.gohtml")
+	//GetAlertMessage(w, r, "passwordErr", "err", "View/Auth/login.gohtml")
+	logAlert.GetAlertMessage(w, r, "View/Auth/login.gohtml")
 	renderGohtml(w, "Auth/login.gohtml", nil)
 }
 func LoginRequest(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
@@ -38,7 +45,7 @@ func LoginRequest(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
 			} else {
 				err := MatcherHash(ReturnPassword, password)
 				if err != nil {
-					AddAlertMessage(w, r, "passwordErr", "Password Not Match")
+					logAlert.AddAlertMessage(w, r)
 					http.Redirect(w, r, "/login", http.StatusFound)
 				} else {
 					session, _ := KufaSessions.Store.Get(r, "Go_Session")
