@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"golang.org/x/crypto/bcrypt"
 	"html/template"
+	"kufa/KufaSessions"
 	"log"
 	"net/http"
 	"path/filepath"
@@ -47,6 +48,19 @@ func renderMultipleGohtml(w http.ResponseWriter, data interface{}, files ...stri
 	err = parseFiles.Execute(w, data)
 	if err != nil {
 		fmt.Println(err.Error())
+	}
+
+}
+
+// log with Auth //
+func renderWithAuth(w http.ResponseWriter, r *http.Request, data interface{}, files ...string) {
+	session, _ := KufaSessions.Store.Get(r, "Go_Session")
+	if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
+		http.Redirect(w, r, "/login", http.StatusFound)
+		return
+	} else {
+		renderMultipleGohtml(w, data, files...)
+
 	}
 
 }
