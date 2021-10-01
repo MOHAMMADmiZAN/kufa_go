@@ -59,6 +59,7 @@ func LogOut(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
 	session, _ := KufaSessions.Store.Get(r, "Go_Session")
 
 	session.Values["authenticated"] = false
+	session.Options.MaxAge = -1
 	err := session.Save(r, w)
 	if err != nil {
 		log.Fatalln(err.Error())
