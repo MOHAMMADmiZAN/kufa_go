@@ -37,7 +37,6 @@ func LoginRequest(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
 			} else {
 				err := MatcherHash(ReturnPassword, password)
 				if err != nil {
-					fmt.Println(err)
 					http.Redirect(w, r, "/login", http.StatusFound)
 				} else {
 					session, _ := KufaSessions.Store.Get(r, "Go_Session")

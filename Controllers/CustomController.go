@@ -78,7 +78,7 @@ func MatcherHash(hashPassword, password string) error {
 	hp := []byte(hashPassword)
 	err := bcrypt.CompareHashAndPassword(hp, bs)
 	if err != nil {
-		log.Fatalln(err)
+		fmt.Println(err.Error())
 	}
 	return err
 }
@@ -91,4 +91,30 @@ type User struct {
 type LoginUser struct {
 	Email    string `validate:"required,email" json:"email"`
 	Password string `validate:"required,min=4,max=20" json:"password"`
+}
+
+type FrontEndAlert struct {
+	Type         string
+	ErrorMessage string
+	ErrorSession string
+}
+type FrontEndAlertInterface interface {
+	AddErrorMessage()
+	GetErrorMessage()
+}
+
+func (F FrontEndAlert) AddErrorMessage(w http.ResponseWriter, r *http.Request) {
+	session, _ := KufaSessions.Store.Get(r, F.ErrorSession)
+	session.AddFlash(F.ErrorMessage)
+	err := session.Save(r, w)
+	if err != nil {
+		fmt.Println("Error Message Failed", err)
+	}
+	return
+}
+func (F FrontEndAlert) GetErrorMessage(w http.ResponseWriter, r *http.Request, render interface{}) {
+	session, _ := KufaSessions.Store.Get(r, F.ErrorSession)
+	if flashes := session.Flashes(); len(flashes) > 0 {
+
+	}
 }
