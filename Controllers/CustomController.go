@@ -78,7 +78,7 @@ func MatcherHash(hashPassword, password string) error {
 	hp := []byte(hashPassword)
 	err := bcrypt.CompareHashAndPassword(hp, bs)
 	if err != nil {
-		fmt.Println(err.Error())
+		//fmt.Println(err.Error())
 	}
 	return err
 }
@@ -93,28 +93,45 @@ type LoginUser struct {
 	Password string `validate:"required,min=4,max=20" json:"password"`
 }
 
-type FrontEndAlert struct {
-	Type         string
-	ErrorMessage string
-	ErrorSession string
-}
-type FrontEndAlertInterface interface {
-	AddErrorMessage()
-	GetErrorMessage()
-}
+//type FrontEndAlert struct {
+//	Type         string
+//	ErrorMessage string
+//	ErrorSession string
+//}
+//
+//func FAlert(typ string, message string, session string) *FrontEndAlert {
+//
+//	return FAlert(typ, message, session)
+//
+//}
 
-func (F FrontEndAlert) AddErrorMessage(w http.ResponseWriter, r *http.Request) {
-	session, _ := KufaSessions.Store.Get(r, F.ErrorSession)
-	session.AddFlash(F.ErrorMessage)
+func AddAlertMessage(w http.ResponseWriter, r *http.Request, ErrorSession string, ErrorMessage string) {
+	session, _ := KufaSessions.Store.Get(r, ErrorSession)
+	session.AddFlash(ErrorMessage)
 	err := session.Save(r, w)
 	if err != nil {
 		fmt.Println("Error Message Failed", err)
 	}
 	return
 }
-func (F FrontEndAlert) GetErrorMessage(w http.ResponseWriter, r *http.Request, render interface{}) {
-	session, _ := KufaSessions.Store.Get(r, F.ErrorSession)
+func GetAlertMessage(w http.ResponseWriter, r *http.Request, ErrorSession string, Typ string, renderGo ...string) {
+	session, _ := KufaSessions.Store.Get(r, ErrorSession)
 	if flashes := session.Flashes(); len(flashes) > 0 {
+		ErrData := struct {
+			Message interface{}
+			Type    string
+		}{
+			Message: flashes[0],
+			Type:    Typ,
+		}
+		err := session.Save(r, w)
+		if err != nil {
+			fmt.Println("Error Message Failed", err)
+
+		}
+		fmt.Println()
+		renderMultipleGohtml(w, ErrData, renderGo...)
 
 	}
+
 }

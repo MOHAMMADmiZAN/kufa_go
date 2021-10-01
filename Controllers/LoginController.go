@@ -12,7 +12,8 @@ import (
 )
 
 func Login(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
-	renderGohtml(w, "login.gohtml", nil)
+	GetAlertMessage(w, r, "passwordErr", "err", "View/Auth/login.gohtml")
+	renderGohtml(w, "Auth/login.gohtml", nil)
 }
 func LoginRequest(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
 	if r.Method == http.MethodPost {
@@ -37,6 +38,7 @@ func LoginRequest(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
 			} else {
 				err := MatcherHash(ReturnPassword, password)
 				if err != nil {
+					AddAlertMessage(w, r, "passwordErr", "Password Not Match")
 					http.Redirect(w, r, "/login", http.StatusFound)
 				} else {
 					session, _ := KufaSessions.Store.Get(r, "Go_Session")
