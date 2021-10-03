@@ -16,6 +16,7 @@ var logAlert = FrontEndAlert{
 	ErrorSession: "PasswordError",
 	ErrorMessage: "Password Not Valid",
 }
+var logEmailAlert = SetFrontEndAlert("notFound", "Not yet a member?", "userNotFound")
 
 func Login(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
 	//GetAlertMessage(w, r, "passwordErr", "err", "View/Auth/login.gohtml")
@@ -40,8 +41,9 @@ func LoginRequest(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
 			var ReturnPassword string
 			err := DataBase.Db.QueryRow("SELECT email, password FROM users WHERE email=?", email).Scan(&ReturnUser, &ReturnPassword)
 			if err == sql.ErrNoRows && err != nil {
-				fmt.Println(err)
-				http.Redirect(w, r, "/login", http.StatusFound)
+				logEmailAlert.AddAlertMessage(w, r)
+				logEmailAlert.GetAlertMessage(w, r, "View/Auth/login.gohtml")
+
 			} else {
 				err := MatcherHash(ReturnPassword, password)
 				if err != nil {

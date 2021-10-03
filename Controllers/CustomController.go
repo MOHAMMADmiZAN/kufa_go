@@ -100,6 +100,14 @@ type FrontEndAlert struct {
 	ErrorSession string
 }
 
+func SetFrontEndAlert(typ string, errMsg string, errSession string) *FrontEndAlert {
+
+	return &FrontEndAlert{
+		Type:         typ,
+		ErrorMessage: errMsg,
+		ErrorSession: errSession,
+	}
+}
 func (F FrontEndAlert) AddAlertMessage(w http.ResponseWriter, r *http.Request) {
 	session, _ := KufaSessions.Store.Get(r, F.ErrorSession)
 	session.AddFlash(F.ErrorMessage)

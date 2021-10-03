@@ -1,18 +1,18 @@
 {{template "starlightHeader"  }}
 {{block "css" .}}{{end}}
 {{block "content" .}}
-    <div class="container">
-        <div class="row mt-5">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header"></div>
-                    <div class="card-body text-center text-uppercase">
-                      <h1>Dashboard</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <nav class="breadcrumb sl-breadcrumb">
+        <a class="breadcrumb-item" href="/dashboard">Starlight</a>
+        <a class="breadcrumb-item" href="/dashboard">Pages</a>
+        <span class="breadcrumb-item active">Blank Page</span>
+    </nav>
+    <div class="sl-pagebody">
+        <div class="sl-page-title">
+            <h5>Blank Page</h5>
+            <p>This is a starter page</p>
+        </div><!-- sl-page-title -->
+
+    </div><!-- sl-pagebody -->
 {{end}}
 {{block "js" .}}{{end}}
 {{template "startlightFooter"}}

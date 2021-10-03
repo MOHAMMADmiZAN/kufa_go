@@ -58,11 +58,16 @@
             <form action="/loginRequest" method="POST">
                 <div class="form-group">
                     <input type="text" name="email" class="form-control" placeholder="Enter your username">
+                    {{if eq .Type "notFound"}}
+                        <div class="alert alert-danger mt-1 text-center text-uppercase">
+                            {{.Message}} <a href="/register">SIGN UP</a>
+                        </div>
+                    {{end}}
                 </div><!-- form-group -->
                 <div class="form-group">
                     <input type="password" name="password" class="form-control" placeholder="Enter your password">
                     {{if eq .Type "error"}}
-                        <div class="alert alert-danger mt-1">{{.Message}}</div>
+                        <div class="alert alert-danger mt-1 text-center">{{.Message}}</div>
                     {{end}}
                     <a href="" class="tx-info tx-12 d-block mg-t-10">Forgot password?</a>
                 </div><!-- form-group -->
