@@ -20,12 +20,15 @@ var logEmailAlert = SetFrontEndAlert("notFound", "Not yet a member?", "userNotFo
 
 func Login(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
 	//GetAlertMessage(w, r, "passwordErr", "err", "View/Auth/login.gohtml")
-	logAlert.GetAlertMessage(w, r, "View/Auth/login.gohtml")
+	logAlert.GetAlertMessage(w, r, nil, "View/Auth/login.gohtml")
 	renderGohtml(w, "Auth/login.gohtml", nil)
 }
 func LoginRequest(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
 	if r.Method == http.MethodPost {
-		r.ParseForm()
+		err := r.ParseForm()
+		if err != nil {
+			fmt.Println(err.Error())
+		}
 		email := r.Form.Get("email")
 		password := r.Form.Get("password")
 		loginUser := &LoginUser{
@@ -33,7 +36,7 @@ func LoginRequest(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
 			Password: password,
 		}
 		validate := validator.New()
-		err := validate.Struct(loginUser)
+		err = validate.Struct(loginUser)
 		if err != nil {
 			fmt.Fprint(w, err.(validator.ValidationErrors))
 		} else {
@@ -42,7 +45,7 @@ func LoginRequest(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
 			err := DataBase.Db.QueryRow("SELECT email, password FROM users WHERE email=?", email).Scan(&ReturnUser, &ReturnPassword)
 			if err == sql.ErrNoRows && err != nil {
 				logEmailAlert.AddAlertMessage(w, r)
-				logEmailAlert.GetAlertMessage(w, r, "View/Auth/login.gohtml")
+				logEmailAlert.GetAlertMessage(w, r, nil, "View/Auth/login.gohtml")
 
 			} else {
 				err := MatcherHash(ReturnPassword, password)

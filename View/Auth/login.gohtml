@@ -51,23 +51,23 @@
             <div class="signin-logo tx-center tx-24 tx-bold tx-inverse">starlight <span
                         class="tx-info tx-normal">admin</span></div>
             <div class="tx-center mg-b-60">Professional Admin Template Design</div>
-            {{if eq .Type "register"}}
-                <div class="alert alert-success mt-1 text-center">{{.Message}}</div>
+            {{if eq .Alert.Type "register"}}
+                <div class="alert alert-success mt-1 text-center">{{.Alert.Message}}</div>
             {{end}}
 
             <form action="/loginRequest" method="POST">
                 <div class="form-group">
                     <input type="text" name="email" class="form-control" placeholder="Enter your username">
-                    {{if eq .Type "notFound"}}
+                    {{if eq .Alert.Type "notFound"}}
                         <div class="alert alert-danger mt-1 text-center text-uppercase">
-                            {{.Message}} <a href="/register">SIGN UP</a>
+                            {{.Alert.Message}} <a href="/register">SIGN UP</a>
                         </div>
                     {{end}}
                 </div><!-- form-group -->
                 <div class="form-group">
                     <input type="password" name="password" class="form-control" placeholder="Enter your password">
-                    {{if eq .Type "error"}}
-                        <div class="alert alert-danger mt-1 text-center">{{.Message}}</div>
+                    {{if eq .Alert.Type "error"}}
+                        <div class="alert alert-danger mt-1 text-center">{{.Alert.Message}}</div>
                     {{end}}
                     <a href="" class="tx-info tx-12 d-block mg-t-10">Forgot password?</a>
                 </div><!-- form-group -->

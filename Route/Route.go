@@ -33,6 +33,13 @@ func Route() {
 	router.GET("/logOut", Controllers.LogOut)
 	//http.HandleFunc("/dashboard", Controllers.Dashboard)
 	router.GET("/dashboard", Controllers.Dashboard)
+	// user Route
+	router.GET("/userList", Controllers.Users)
+	router.GET("/userDelete", Controllers.UserDelete)
+	router.GET("/userTrash", Controllers.UserTrash)
+	router.GET("/userRecover", Controllers.UserRecover)
+	router.GET("/userPDelete", Controllers.UserPDelete)
+
 	fmt.Println(fmt.Sprintf("Server Starting At PortNumber: %s", PortNumber))
 	DataBase.Err = http.ListenAndServe(PortNumber, router)
 	if DataBase.Err != nil {

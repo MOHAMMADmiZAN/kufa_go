@@ -1,0 +1,42 @@
+{{template "starlightHeader"  }}
+{{block "css" .}}{{end}}
+{{block "usertrashed" .}}
+    <nav class="breadcrumb sl-breadcrumb">
+        <a class="breadcrumb-item" href="/dashboard">Starlight</a>
+        <a class="breadcrumb-item" href="/dashboard">Pages</a>
+        <span class="breadcrumb-item active">User List Page</span>
+    </nav>
+    <div class="sl-pagebody">
+        <div class="card">
+
+            <table class="table table-striped table-secondary mb-0 text-center">
+                <thead>
+                <tr>
+                    <th class="text-center">Id</th>
+                    <th class="text-center">Email</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Role</th>
+                    <th class="text-center">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{range $i, $e:= .}}
+                    <tr>
+                        <td>{{$e.Add $i}}</td>
+                        <td>{{$e.UserEmail}}</td>
+                        <td>{{if eq $e.UserStatus "2"}}Deactivate{{end}}</td>
+                        <td>{{if eq $e.UserRole "1"}}Admin{{end}}</td>
+                        <td><a href="/userRecover?id={{$e.UserId}}" class="btn btn-info">recover</a> <a
+                                    href="/userPDelete?id={{$e.UserId}}" class="btn btn-danger">Delete</a></td>
+                    </tr>
+                {{end}}
+                </tbody>
+
+            </table>
+        </div>
+
+
+    </div><!-- sl-pagebody -->
+{{end}}
+{{block "js" .}}{{end}}
+{{template "startlightFooter"}}

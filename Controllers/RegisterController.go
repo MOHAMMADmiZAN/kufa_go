@@ -17,7 +17,7 @@ var registerAlert = FrontEndAlert{
 }
 
 func Register(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
-	registerAlert.GetAlertMessage(w, r, "View/Auth/login.gohtml")
+	registerAlert.GetAlertMessage(w, r, nil, "View/Auth/login.gohtml")
 	renderGohtml(w, "Auth/register.gohtml", nil)
 }
 func RegisterRequest(w http.ResponseWriter, r *http.Request, h httprouter.Params) {
@@ -55,7 +55,7 @@ func RegisterRequest(w http.ResponseWriter, r *http.Request, h httprouter.Params
 					log.Fatalln(err)
 				}
 			}(insert)
-			registerAlert.GetAlertMessage(w, r, "View/Auth/login.gohtml")
+			registerAlert.GetAlertMessage(w, r, nil, "View/Auth/login.gohtml")
 		}
 
 		//http.Redirect(w, r, r.Header.Get("Referer"), http.StatusFound)

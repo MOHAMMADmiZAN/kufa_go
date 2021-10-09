@@ -42,8 +42,7 @@ func renderMultipleGohtml(w http.ResponseWriter, data interface{}, files ...stri
 	files = append(files, LayoutFiles()...)
 	parseFiles, err := template.ParseFiles(files...)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
+		fmt.Println(err.Error())
 	}
 	err = parseFiles.Execute(w, data)
 	if err != nil {
@@ -117,7 +116,7 @@ func (F FrontEndAlert) AddAlertMessage(w http.ResponseWriter, r *http.Request) {
 	}
 	return
 }
-func (F FrontEndAlert) GetAlertMessage(w http.ResponseWriter, r *http.Request, renderGo ...string) {
+func (F FrontEndAlert) GetAlertMessage(w http.ResponseWriter, r *http.Request, data interface{}, renderGo ...string) {
 	session, _ := KufaSessions.Store.Get(r, F.ErrorSession)
 	if flashes := session.Flashes(); len(flashes) > 0 {
 		ErrData := struct {
@@ -132,6 +131,26 @@ func (F FrontEndAlert) GetAlertMessage(w http.ResponseWriter, r *http.Request, r
 			fmt.Println("Error Message Failed", err)
 
 		}
-		renderMultipleGohtml(w, ErrData, renderGo...)
+		DataWithAlert := struct {
+			DataWithSession interface{}
+			Alert           interface{}
+		}{
+			DataWithSession: data,
+			Alert:           ErrData,
+		}
+		renderMultipleGohtml(w, DataWithAlert, renderGo...)
 	}
+}
+func renderWithAlert(w http.ResponseWriter, data interface{}, files ...string) {
+	files = append(files, LayoutFiles()...)
+	parseFiles, err := template.ParseFiles(files...)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	err = parseFiles.Execute(w, data)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
 }
